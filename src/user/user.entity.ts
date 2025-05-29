@@ -5,9 +5,9 @@ import {
   CreateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { TaskList } from '../task-lists/task-list.entity';
+import { TaskList } from '../tasks-list/tasks-list.entity';
 
-@Entity('users')
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
