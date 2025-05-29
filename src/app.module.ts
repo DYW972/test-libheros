@@ -9,6 +9,8 @@ import { User } from './user/user.entity';
 import { TaskList } from './tasks-list/tasks-list.entity';
 import { Task } from './task/task.entity';
 
+import { UserModule } from './user/user.module';
+
 console.log(process.env);
 @Module({
   imports: [
@@ -23,7 +25,7 @@ console.log(process.env);
       entities: [User, TaskList, Task],
       synchronize: process.env.NODE_ENV === 'DEMO',
     }),
-    TypeOrmModule.forFeature([User, TaskList, Task]),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

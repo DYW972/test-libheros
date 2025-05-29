@@ -7,12 +7,12 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { UsersService } from './user.service';
+import { UserService } from './user.service';
 import { User } from './user.entity';
 
 @Controller('users')
-export class UsersController {
-  constructor(private readonly service: UsersService) {}
+export class UserController {
+  constructor(private readonly service: UserService) {}
 
   @Get()
   findAll() {
