@@ -21,7 +21,7 @@ console.log(process.env);
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [User, TaskList, Task],
-      synchronize: true,
+      synchronize: process.env.NODE_ENV === 'DEMO',
     }),
     TypeOrmModule.forFeature([User, TaskList, Task]),
   ],
