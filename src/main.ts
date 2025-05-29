@@ -5,4 +5,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(3000);
 }
-bootstrap();
+
+async function run() {
+  try {
+    await bootstrap();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+void run();
