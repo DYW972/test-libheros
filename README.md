@@ -42,4 +42,4 @@ $ npm run test:cov
 
 ## License
 
-This project is [Unlicensed](https://github.com/DYW972/test-libheros/blob/main/LICENSE).
+This project is [MIT licensed](https://github.com/DYW972/test-libheros/blob/main/LICENSE.md).
