@@ -12,7 +12,7 @@ import { Task } from '../task/task.entity';
 import { UserModule } from '../user/user.module';
 import { TaskModule } from '../task/task.module';
 import { TasksListModule } from '../tasks-list/tasks-list.module';
-import { AuthModule } from 'src/authentication/auth.module';
+import { AuthModule } from '../authentication/auth.module';
 
 @Module({
   imports: [
@@ -27,10 +27,10 @@ import { AuthModule } from 'src/authentication/auth.module';
       entities: [User, TasksList, Task],
       synchronize: process.env.NODE_ENV === 'DEMO',
     }),
-    UserModule,
-    TaskModule,
-    TasksListModule,
     AuthModule,
+    UserModule,
+    TasksListModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
