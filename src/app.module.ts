@@ -10,8 +10,8 @@ import { TaskList } from './tasks-list/tasks-list.entity';
 import { Task } from './task/task.entity';
 
 import { UserModule } from './user/user.module';
+import { TaskModule } from './task/task.module';
 
-console.log(process.env);
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env.demo' }),
@@ -26,6 +26,7 @@ console.log(process.env);
       synchronize: process.env.NODE_ENV === 'DEMO',
     }),
     UserModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
