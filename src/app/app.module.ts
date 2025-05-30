@@ -12,6 +12,7 @@ import { Task } from '../task/task.entity';
 import { UserModule } from '../user/user.module';
 import { TaskModule } from '../task/task.module';
 import { TasksListModule } from '../tasks-list/tasks-list.module';
+import { AuthModule } from 'src/authentication/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TasksListModule } from '../tasks-list/tasks-list.module';
     UserModule,
     TaskModule,
     TasksListModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

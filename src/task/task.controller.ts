@@ -6,10 +6,13 @@ import {
   Param,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto, UpdateTaskDto } from './task.dto';
+import { JwtAuthGuard } from 'src/authentication/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
