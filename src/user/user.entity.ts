@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { TaskList } from '../tasks-list/tasks-list.entity';
+import { TasksList } from '../tasks-list/tasks-list.entity';
 
 @Entity('user')
 export class User {
@@ -24,6 +24,6 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => TaskList, (taskList) => taskList.user)
-  taskLists: TaskList[];
+  @OneToMany(() => TasksList, (taskList) => taskList.user)
+  tasksList: TasksList[];
 }

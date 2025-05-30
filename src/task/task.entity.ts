@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { TaskList } from '../tasks-list/tasks-list.entity';
+import { TasksList } from '../tasks-list/tasks-list.entity';
 import { TaskStatus } from './task.enum';
 
 @Entity('task')
@@ -28,8 +28,8 @@ export class Task {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => TaskList, (taskList) => taskList.tasks, {
+  @ManyToOne(() => TasksList, (tasksList) => tasksList.tasks, {
     onDelete: 'CASCADE',
   })
-  taskList: TaskList;
+  taskList: TasksList;
 }
