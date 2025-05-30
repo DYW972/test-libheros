@@ -7,12 +7,12 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { TaskList } from './tasks-list.entity';
-import { TaskListsService } from './tasks-list.service';
+import { TasksList } from './tasks-list.entity';
+import { TasksListService } from './tasks-list.service';
 
-@Controller('task-lists')
-export class TaskListsController {
-  constructor(private readonly service: TaskListsService) {}
+@Controller('tasks-list')
+export class TasksListController {
+  constructor(private readonly service: TasksListService) {}
 
   @Get()
   findAll() {
@@ -25,12 +25,12 @@ export class TaskListsController {
   }
 
   @Post()
-  create(@Body() body: Partial<TaskList>) {
+  create(@Body() body: Partial<TasksList>) {
     return this.service.create(body);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body: Partial<TaskList>) {
+  update(@Param('id') id: string, @Body() body: Partial<TasksList>) {
     return this.service.update(id, body);
   }
 
