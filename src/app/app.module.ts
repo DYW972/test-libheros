@@ -5,13 +5,13 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
-import { User } from './user/user.entity';
-import { TasksList } from './tasks-list/tasks-list.entity';
-import { Task } from './task/task.entity';
+import { User } from '../user/user.entity';
+import { TasksList } from '../tasks-list/tasks-list.entity';
+import { Task } from '../task/task.entity';
 
-import { UserModule } from './user/user.module';
-import { TaskModule } from './task/task.module';
-import { TasksListModule } from './tasks-list/tasks-list.module';
+import { UserModule } from '../user/user.module';
+import { TaskModule } from '../task/task.module';
+import { TasksListModule } from '../tasks-list/tasks-list.module';
 
 @Module({
   imports: [
