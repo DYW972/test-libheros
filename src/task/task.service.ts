@@ -4,15 +4,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Task } from './task.entity';
 import { CreateTaskDto, UpdateTaskDto } from './task.dto';
-import { TaskList } from '../tasks-list/tasks-list.entity';
+import { TasksList } from '../tasks-list/tasks-list.entity';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>,
-    @InjectRepository(TaskList)
-    private readonly taskListRepository: Repository<TaskList>,
+    @InjectRepository(TasksList)
+    private readonly taskListRepository: Repository<TasksList>,
   ) {}
 
   async create(createTaskDto: CreateTaskDto): Promise<Task> {

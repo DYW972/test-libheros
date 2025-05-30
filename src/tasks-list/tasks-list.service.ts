@@ -1,31 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TaskList } from './tasks-list.entity';
+import { TasksList } from './tasks-list.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
-export class TaskListsService {
-  constructor(@InjectRepository(TaskList) private repo: Repository<TaskList>) {}
+export class TasksListService {
+  constructor(
+    @InjectRepository(TasksList)
+    private tasksListRepository: Repository<TasksList>,
+  ) {}
 
-  findAll() {
-    return this.repo.find({ relations: ['user'] });
+  async findAll() {
+    return this.tasksListRepository.find({ relations: ['user'] });
   }
 
-  findOne(id: string) {
-    return this.repo.findOne({ where: { id }, relations: ['user', 'tasks'] });
+  async findOne(id: string) {
+    return this.tasksListRepository.findOne({
+      where: { id },
+      relations: ['user', 'tasks'],
+    });
   }
 
-  create(data: Partial<TaskList>) {
-    const list = this.repo.create(data);
-    return this.repo.save(list);
+  async create(data: Partial<TasksList>) {
+    const list = this.tasksListRepository.create(data);
+    return this.tasksListRepository.save(list);
   }
 
-  async update(id: string, attrs: Partial<TaskList>) {
-    await this.repo.update(id, attrs);
+  async findByUser(userId: string): Promise<TasksList[]> {
+    return this.tasksListRepository.find({
+      where: { user: { id: userId } },
+      relations: ['user'],
+    });
+  }
+
+  async update(id: string, attrs: Partial<TasksList>) {
+    await this.tasksListRepository.update(id, attrs);
     return this.findOne(id);
   }
 
-  delete(id: string) {
-    return this.repo.delete(id);
+  async delete(id: string) {
+    const result = await this.tasksListRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('Task not found');
+    }
   }
 }
