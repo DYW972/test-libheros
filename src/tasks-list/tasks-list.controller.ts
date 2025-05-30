@@ -6,10 +6,13 @@ import {
   Body,
   Patch,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TasksList } from './tasks-list.entity';
 import { TasksListService } from './tasks-list.service';
+import { JwtAuthGuard } from 'src/authentication/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('tasks-list')
 export class TasksListController {
   constructor(private readonly service: TasksListService) {}
