@@ -9,8 +9,8 @@ import {
 import { User } from '../user/user.entity';
 import { Task } from '../task/task.entity';
 
-@Entity('task_list')
-export class TaskList {
+@Entity('tasks_list')
+export class TasksList {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -20,7 +20,7 @@ export class TaskList {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.taskLists, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.tasksList, { onDelete: 'CASCADE' })
   user: User;
 
   @OneToMany(() => Task, (task) => task.taskList)
