@@ -3,6 +3,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+interface ErrorResponse {
+  message?: string;
+}
+
 export default function Login() {
   const router = useRouter();
 
@@ -37,8 +41,12 @@ export default function Login() {
       });
 
       if (!res.ok) {
-        const error = await res.json();
-        alert('Login failed: ' + error.message);
+        const error = (await res.json()) as ErrorResponse;
+        if (error && typeof error.message === 'string') {
+          alert('Login failed: ' + error.message);
+        } else {
+          alert('Login failed: unknown error');
+        }
         return;
       }
 
