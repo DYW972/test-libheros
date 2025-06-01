@@ -1,18 +1,31 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function Login() {
-  console.log('Login component rendered');
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    async function checkAuth() {
+      const res = await fetch('http://localhost:3000/auth/me', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (res.ok) {
+        router.replace('/home');
+      }
+    }
+
+    checkAuth().catch(console.error);
+  }, [router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('Form submitted');
-    alert(`Email: ${email}, Password: ${password}`);
+    e.preventDefault();
     try {
       const res = await fetch('http://localhost:3000/auth/login', {
         method: 'POST',
@@ -20,17 +33,14 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
+        credentials: 'include',
       });
-      console.log(res);
-      console.log('here');
+
       if (!res.ok) {
         const error = await res.json();
         alert('Login failed: ' + error.message);
         return;
       }
-
-      const data = await res.json();
-      localStorage.setItem('token', data.access_token);
 
       router.push('/home');
     } catch (err) {
@@ -51,8 +61,6 @@ export default function Login() {
         <form
           className="space-y-6"
           onSubmit={(e) => {
-            console.log('Form submitted');
-            e.preventDefault();
             void handleSubmit(e);
           }}
         >
