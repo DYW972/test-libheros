@@ -55,9 +55,16 @@ export class AuthController {
     return { user: { id, email } };
   }
 
-  @Get('test')
-  test() {
-    return { message: 'Hello from auth/test' };
+  @Post('logout')
+  logout(@Res() res: Response) {
+    res.clearCookie('access_token', {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    return res.status(200).json({ message: 'Logged out' });
   }
 
   @UseGuards(JwtAuthGuard)
