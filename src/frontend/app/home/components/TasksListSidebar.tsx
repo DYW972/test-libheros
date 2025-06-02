@@ -1,28 +1,28 @@
 import { useState } from 'react';
 import Modal from './Modal';
-import { TasksList, Body, Props } from '../../../types/TasksListSidebar';
+
+import { TTasksList } from '../../../types/TasksList';
+import { TTasksListSideBarProps } from '../../../types/TasksListSidebar';
 
 export default function TasksListSidebar({
   userId,
   tasksLists,
   setTasksLists,
   selectedListId,
-  setSelectedListId,
+  handleSelectedListId,
   confirmDeleteList,
   setConfirmDeleteList,
-}: Props) {
-  const [newListName, setNewListName] = useState('');
+}: TTasksListSideBarProps) {
+  const [newList, setNewList] = useState<TTasksList | null>({
+    title: '',
+    user: '',
+  });
   const [creatingList, setCreatingList] = useState(false);
   const [tasksListNameAlreadyUsed, setTasksListNameAlreadyUsed] =
     useState<boolean>(false);
   const [tasksListIdToDelete, setTasksListIdToDelete] = useState<string | null>(
     null,
   );
-
-  const body: Body = {
-    title: newListName,
-    user: userId,
-  };
 
   const shadowTasksLists = [...tasksLists];
 
@@ -32,15 +32,18 @@ export default function TasksListSidebar({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(newList),
       credentials: 'include',
     });
 
-    const tasksList = (await response.json()) as TasksList;
-    shadowTasksLists.push(tasksList);
     if (response.ok) {
+      const tasksList = (await response.json()) as TTasksList;
+      shadowTasksLists.push(tasksList);
       setTasksLists(shadowTasksLists);
-      setNewListName('');
+      setNewList({
+        title: '',
+        user: '',
+      });
       setCreatingList(false);
     }
   }
@@ -62,7 +65,7 @@ export default function TasksListSidebar({
   }
 
   function HandleTasksListName(value: string) {
-    setNewListName(value);
+    setNewList(value);
     setTasksListNameAlreadyUsed(
       tasksLists.some((element) => element.title === value),
     );
@@ -79,8 +82,9 @@ export default function TasksListSidebar({
         {creatingList ? (
           <>
             <input
-              value={newListName}
+              value={newList}
               onChange={(e) => HandleTasksListName(e.target.value)}
+              required
               className={`w-full border rounded px-3 py-1.5 mb-2 focus:outline-none focus:ring-2 ${tasksListNameAlreadyUsed ? 'focus:ring-red-500 border-red-500' : 'focus:ring-indigo-400 border-indigo-500'}`}
               placeholder="Nom de la liste"
               maxLength={50}
@@ -125,7 +129,7 @@ export default function TasksListSidebar({
           >
             <h3
               className="flex-1 text-left text-lg font-medium text-gray-900 cursor-pointer"
-              onClick={() => setSelectedListId(list.id)}
+              onClick={() => handleSelectedListId(list.id)}
             >
               {list.title}
             </h3>
