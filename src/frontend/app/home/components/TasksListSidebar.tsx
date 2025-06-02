@@ -82,7 +82,7 @@ export default function TasksListSidebar({
         {creatingList ? (
           <>
             <input
-              value={newList}
+              value={newList.title}
               onChange={(e) => HandleTasksListName(e.target.value)}
               required
               className={`w-full border rounded px-3 py-1.5 mb-2 focus:outline-none focus:ring-2 ${tasksListNameAlreadyUsed ? 'focus:ring-red-500 border-red-500' : 'focus:ring-indigo-400 border-indigo-500'}`}
