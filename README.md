@@ -14,31 +14,33 @@ $ cd test-libheros
 $ npm install
 ```
 
+## Run docker compose for PostgreSQL database
+
+Open a new terminal tab to see the logs
+
+```bash
+$ docker compose up
+```
+
 ## Compile and run the project
+
+Open a new terminal tab to see the logs
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+$ npm run dev:backend
 ```
 
-## Run tests
+Open a new terminal tab to see the logs
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# development
+$ npm run dev:frontend
 ```
+
+## Browse the project
+
+Open your browser and got to localhost:3001 to see the project running
 
 ## License
 
