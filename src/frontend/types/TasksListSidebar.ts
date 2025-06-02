@@ -1,21 +1,11 @@
-export type Body = {
-  title: string;
-  user: string;
-};
+import { TTasksList } from './TasksList';
 
-export type TasksList = {
-  id: string;
-  title: string;
-  createdAt: string;
-  user: string;
-};
-
-export type Props = {
+export type TTasksListSideBarProps = {
   userId: string;
-  tasksLists: TasksList[];
-  setTasksLists: React.Dispatch<React.SetStateAction<TasksList[]>>;
+  tasksLists: TTasksList[];
+  setTasksLists: React.Dispatch<React.SetStateAction<TTasksList[]>>;
   selectedListId: string;
-  setSelectedListId: (id: string) => void;
+  handleSelectedListId: (id: string) => void;
   confirmDeleteList: boolean;
   setConfirmDeleteList: (value: boolean) => void;
 };
