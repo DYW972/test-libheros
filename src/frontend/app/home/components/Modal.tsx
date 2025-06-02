@@ -1,5 +1,11 @@
-import { Props } from '../../../types/Modal';
-export default function Modal({ title, message, onCancel, onConfirm }: Props) {
+import { TModalProps } from '../../../types/Modal';
+
+export default function Modal({
+  title,
+  message,
+  onCancel,
+  onConfirm,
+}: TModalProps) {
   return (
     <div className="fixed inset-0 bg-indigo-50/75 flex items-center justify-center z-20">
       <div className="bg-white rounded shadow-lg max-w-sm w-full p-4">
