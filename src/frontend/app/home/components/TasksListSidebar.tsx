@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Modal from './Modal';
-import { TasksList, Body, Props } from '../../../types/tasksListSidebarProps';
+import { TasksList, Body, Props } from '../../../types/TasksListSidebar';
 
 export default function TasksListSidebar({
   userId,
@@ -150,7 +150,6 @@ export default function TasksListSidebar({
           onConfirm={() => {
             void handleDeleteTasksList(tasksListIdToDelete);
           }}
-          confirmClass="bg-red-600 hover:bg-red-700"
         />
       )}
     </aside>
