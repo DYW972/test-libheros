@@ -19,8 +19,7 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  async function handleLogout(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleLogout() {
     try {
       const res = await fetch('http://localhost:3000/auth/logout', {
         method: 'POST',
@@ -32,8 +31,8 @@ export default function Navbar() {
       } else {
         console.error('Logout failed');
       }
-    } catch (err) {
-      console.error('Logout error: ' + (err as Error).message);
+    } catch (error) {
+      console.error('Logout error: ' + (error as Error).message);
     }
     setMenuOpen(false);
   }
@@ -63,8 +62,8 @@ export default function Navbar() {
               user@mail.com
             </p>
             <button
-              onClick={(e) => {
-                void handleLogout(e);
+              onClick={() => {
+                void handleLogout();
               }}
               className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 rounded"
             >
