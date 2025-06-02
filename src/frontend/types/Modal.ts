@@ -1,4 +1,4 @@
-export type Props = {
+export type TModalProps = {
   title: string;
   message: string;
   onCancel: () => void;
