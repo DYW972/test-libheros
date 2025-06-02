@@ -1,58 +1,62 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+
+import { TResponseError } from '../../types/ResponseError';
 
 export default function Register() {
   const router = useRouter();
 
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const ws = useRef<WebSocket | null>(null);
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  });
 
-  useEffect(() => {
-    // Replace with your backend WebSocket URL
-    ws.current = new WebSocket('ws://localhost:3001/ws');
-
-    ws.current.onopen = () => {
-      console.log('WebSocket connected');
-    };
-
-    ws.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'register_success') {
-        // Redirect to home page on success
-        router.push('/home');
-      } else if (data.type === 'register_error') {
-        alert('Registration failed: ' + data.message);
-      }
-    };
-
-    ws.current.onclose = () => {
-      console.log('WebSocket disconnected');
-    };
-
-    return () => {
-      ws.current?.close();
-    };
-  }, [router]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleRegisterUser(e: React.FormEvent) {
     e.preventDefault();
-    if (ws.current?.readyState === WebSocket.OPEN) {
-      ws.current.send(
-        JSON.stringify({
-          action: 'register',
-          email,
-          password,
-        }),
-      );
-    } else {
-      alert('WebSocket connection not open.');
+
+    if (user.password !== user.passwordConfirm) {
+      console.log("Passwords don't match.");
+      return;
     }
-  };
+
+    try {
+      const res = await fetch('http://localhost:3000/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: user.name,
+          email: user.email,
+          password: user.password,
+        }),
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        const error = (await res.json()) as TResponseError;
+        if (error && typeof error.message === 'string') {
+          console.error('Registration failed: ' + error.message);
+        } else {
+          console.error('Registration failed: unknown error');
+        }
+        return;
+      }
+
+      router.push('/home');
+    } catch (err) {
+      console.error('Registration error: ' + (err as Error).message);
+    }
+  }
+
+  const onChange =
+    (field: keyof typeof user) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUser((prev) => ({ ...prev, [field]: e.target.value }));
+    };
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -64,7 +68,12 @@ export default function Register() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form
+          className="space-y-6"
+          onSubmit={(e) => {
+            void handleRegisterUser(e);
+          }}
+        >
           <div>
             <label
               htmlFor="email"
@@ -78,8 +87,8 @@ export default function Register() {
                 name="name"
                 id="name"
                 required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={user.name}
+                onChange={onChange('name')}
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
@@ -98,8 +107,8 @@ export default function Register() {
                 id="email"
                 autoComplete="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={user.email}
+                onChange={onChange('email')}
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
@@ -118,8 +127,8 @@ export default function Register() {
                 id="password"
                 autoComplete="current-password"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={user.password}
+                onChange={onChange('password')}
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
@@ -133,12 +142,12 @@ export default function Register() {
             </label>
             <div className="mt-2">
               <input
-                type="passwordConfirm"
+                type="password"
                 name="passwordConfirm"
                 id="passwordConfirm"
                 required
-                value={passwordConfirm}
-                onChange={(e) => setPasswordConfirm(e.target.value)}
+                value={user.passwordConfirm}
+                onChange={onChange('passwordConfirm')}
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
               />
             </div>
