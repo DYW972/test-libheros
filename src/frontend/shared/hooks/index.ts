@@ -1,3 +1,4 @@
 import { useForm } from './useFrom';
+import { useAuthRedirect } from './useAuthRedirect';
 
-export { useForm };
+export { useForm, useAuthRedirect };
