@@ -1,4 +1,4 @@
-export type TClickToAction = {
+export type TClickToActionProps = {
   route: string;
   question: string;
   action: string;
