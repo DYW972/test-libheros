@@ -4,7 +4,7 @@ import { TInput } from './Input';
 import { TModalProps } from './Modal';
 import { TTasksList } from './TasksList';
 import { THttpMethod } from './HttpMethod';
-import { TAuthFormProps } from './LoginForm';
+import { TAuthFormProps } from './AuthProps';
 import { TTaskCreateProps } from './TaskCreate';
 import { TUseFormReturn } from './useFormReturn';
 import { TResponseError } from './ResponseError';
