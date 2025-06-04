@@ -8,7 +8,8 @@ export const userSchema = z.object({
     .email('Votre adresse e-mail est invalide'),
   password: z
     .string()
-    .min(6, 'Votre mot de passe doit contenir au minimum 6 characters')
+    //.min(6, 'Votre mot de passe doit contenir au minimum 6 characters')
+    .min(1, 'Veuillez renseigner votre mot de passe')
     .optional(),
   passwordConfirm: z
     .string()
