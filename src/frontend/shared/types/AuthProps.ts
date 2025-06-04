@@ -1,5 +1,6 @@
 import { TUser } from './User';
-export type TLoginFormProps = {
+
+export type TAuthFormProps = {
   values: TUser;
   onChange: (
     field: keyof TUser,
