@@ -1,6 +1,6 @@
-import { TInput } from '@/types';
+import { Types } from '@/shared';
 
-function Input(props: TInput) {
+function Input(props: Types.TInput) {
   return (
     <input
       id={props.id}
