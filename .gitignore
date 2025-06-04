@@ -399,3 +399,8 @@ Temporary Items
 dist
 .webpack
 .serverless/**/*.zip
+
+# exclude:
+
+!.env.local
+!.env.demo
