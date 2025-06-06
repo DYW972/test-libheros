@@ -1,7 +1,9 @@
 import { Repository } from 'typeorm';
-import { TasksList } from './tasks-list.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
+
+import { TasksList } from './tasks-list.entity';
+import { CreateTasksListDto } from './taks-list.dto';
 
 @Injectable()
 export class TasksListService {
@@ -10,38 +12,80 @@ export class TasksListService {
     private tasksListRepository: Repository<TasksList>,
   ) {}
 
-  async findAll() {
-    return this.tasksListRepository.find({ relations: ['user'] });
-  }
-
-  async findOne(id: string) {
-    return this.tasksListRepository.findOne({
+  async findOneById(id: string): Promise<TasksList> {
+    const result = await this.tasksListRepository.findOne({
       where: { id },
-      relations: ['user', 'tasks'],
+      relations: ['tasks'],
     });
+
+    if (!result) {
+      throw new NotFoundException(`Tasks list id: ${id} not found`);
+    }
+
+    return result;
   }
 
-  async create(data: Partial<TasksList>) {
+  async findOneByUserId(id: string, userId: string): Promise<TasksList> {
+    const result = await this.tasksListRepository.findOne({
+      where: { id, userId },
+    });
+
+    if (!result) {
+      throw new NotFoundException(
+        `Tasks list id: ${id} by user id: ${userId} not found`,
+      );
+    }
+
+    return result;
+  }
+
+  async findAll(): Promise<TasksList[]> {
+    const result = await this.tasksListRepository.find();
+    if (!result) {
+      throw new NotFoundException(`Tasks lists not found`);
+    }
+
+    return result;
+  }
+
+  async findAllByUserId(userId: string): Promise<TasksList[]> {
+    const result = await this.tasksListRepository.find({ where: { userId } });
+    if (!result) {
+      throw new NotFoundException(
+        `Tasks lists by user id: ${userId} not found`,
+      );
+    }
+
+    return result;
+  }
+
+  async create(data: Partial<CreateTasksListDto>): Promise<TasksList | object> {
+    data.createdAt = new Date();
     const list = this.tasksListRepository.create(data);
     return this.tasksListRepository.save(list);
   }
 
-  async findByUser(userId: string): Promise<TasksList[]> {
-    return this.tasksListRepository.find({
-      where: { user: { id: userId } },
-      relations: ['user'],
-    });
-  }
+  async update(
+    id: string,
+    values: Partial<TasksList>,
+  ): Promise<TasksList | object> {
+    const result = await this.tasksListRepository.update(id, values);
+    if (!result) {
+      throw new Error('Error update');
+    }
 
-  async update(id: string, attrs: Partial<TasksList>) {
-    await this.tasksListRepository.update(id, attrs);
-    return this.findOne(id);
+    return this.findOneById(id);
   }
 
   async delete(id: string) {
     const result = await this.tasksListRepository.delete(id);
+
     if (result.affected === 0) {
-      throw new NotFoundException('Task not found');
+      throw new NotFoundException('Tasks list not found');
     }
+
+    return {
+      message: `Tasks list id: ${id} deleted`,
+    };
   }
 }
