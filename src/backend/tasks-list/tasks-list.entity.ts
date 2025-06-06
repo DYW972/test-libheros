@@ -3,10 +3,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { User } from '../user/user.entity';
+
 import { Task } from '../task/task.entity';
 
 @Entity('tasks_list')
@@ -14,15 +13,15 @@ export class TasksList {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   title: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @ManyToOne(() => User, (user) => user.tasksList, { onDelete: 'CASCADE' })
-  user: User;
+  @Column()
+  userId: string;
 
   @OneToMany(() => Task, (task) => task.taskList)
   tasks: Task[];
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
