@@ -28,6 +28,7 @@ export class TasksListService {
   async findOneByUserId(id: string, userId: string): Promise<TasksList> {
     const result = await this.tasksListRepository.findOne({
       where: { id, userId },
+      relations: ['tasks'],
     });
 
     if (!result) {
@@ -40,7 +41,9 @@ export class TasksListService {
   }
 
   async findAll(): Promise<TasksList[]> {
-    const result = await this.tasksListRepository.find();
+    const result = await this.tasksListRepository.find({
+      relations: ['tasks'],
+    });
     if (!result) {
       throw new NotFoundException(`Tasks lists not found`);
     }
@@ -49,7 +52,10 @@ export class TasksListService {
   }
 
   async findAllByUserId(userId: string): Promise<TasksList[]> {
-    const result = await this.tasksListRepository.find({ where: { userId } });
+    const result = await this.tasksListRepository.find({
+      where: { userId },
+      relations: ['tasks'],
+    });
     if (!result) {
       throw new NotFoundException(
         `Tasks lists by user id: ${userId} not found`,
