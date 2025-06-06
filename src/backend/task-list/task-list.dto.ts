@@ -7,6 +7,8 @@ export class CreateTasksListDto {
 
   @IsUUID()
   userId: string;
+
+  createdAt: Date;
 }
 
 export class UpdateTaskListDto extends PartialType(CreateTasksListDto) {}

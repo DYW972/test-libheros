@@ -3,13 +3,15 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
 
 import { Task } from '../task/task.entity';
+import { TaskListStatus } from './task-list.enum';
 
-@Entity('tasks_list')
-export class TasksList {
+@Entity('task_list')
+export class TaskList {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -19,9 +21,19 @@ export class TasksList {
   @Column()
   userId: string;
 
+  @Column({
+    type: 'enum',
+    enum: TaskListStatus,
+    default: TaskListStatus.OPEN,
+  })
+  status: TaskListStatus;
+
   @OneToMany(() => Task, (task) => task.taskList)
   tasks: Task[];
 
-  @CreateDateColumn()
+  @CreateDateColumn({ default: new Date() })
   createdAt: Date;
+
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt: Date;
 }
