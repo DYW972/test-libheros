@@ -1,25 +1,10 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { Hooks, Types, Schemas, Functions, Components } from '@/shared';
+import { Components } from '@/shared';
+import { useAuthFormHandler } from '@/features/auth/hooks/useAuthFormHandler';
 
 export default function Login() {
-  const router = useRouter();
-  const { values, onChange, validate, reset, errors } =
-    Hooks.useForm<Types.TUser>({
-      initialValues: {
-        email: '',
-        password: '',
-      },
-      schema: Schemas.userSchema,
-    });
-
-  Hooks.useAuthRedirect();
-
-  async function handleSubmit() {
-    if (!validate()) return;
-    const response = await Functions.handleAuth('/auth/login', values, reset);
-    if (response) router.push('/home');
-  }
+  const { values, onChange, errors, handleSubmit } =
+    useAuthFormHandler('signin');
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

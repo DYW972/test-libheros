@@ -1,10 +1,10 @@
-import { TUser } from './User';
+import { UserType } from './user.type';
 
 export type TAuthFormProps = {
-  values: TUser;
+  values: UserType;
   onChange: (
-    field: keyof TUser,
+    field: keyof UserType,
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  errors: Partial<Record<keyof TUser, string>>;
+  errors: Partial<Record<keyof UserType, string>>;
   handleSubmit: () => void;
 };

@@ -1,30 +1,10 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import { Hooks, Types, Schemas, Functions, Components } from '@/shared';
+import { Components } from '@/shared';
+import { useAuthFormHandler } from '@/features/auth/hooks/useAuthFormHandler';
 
 export default function Register() {
-  const router = useRouter();
-  const { values, onChange, validate, reset, errors } =
-    Hooks.useForm<Types.TUser>({
-      initialValues: {
-        name: '',
-        email: '',
-        password: '',
-        passwordConfirm: '',
-      },
-      schema: Schemas.userSchema,
-    });
-
-  async function handleSubmit() {
-    if (!validate()) return;
-    const { passwordConfirm: _, ...userData } = values;
-    const response = await Functions.handleAuth(
-      '/auth/register',
-      userData,
-      reset,
-    );
-    if (response) router.push('/home');
-  }
+  const { values, onChange, errors, handleSubmit } =
+    useAuthFormHandler('signup');
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
