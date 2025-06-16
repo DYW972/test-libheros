@@ -1,4 +1,4 @@
-import Input from './Input';
+import Input from '../ui/Input';
 import { Types } from '@/shared';
 
 const inputClassName =

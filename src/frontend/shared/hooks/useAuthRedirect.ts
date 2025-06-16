@@ -7,14 +7,13 @@ export function useAuthRedirect(): void {
 
   useEffect(() => {
     let isMounted = true;
-
     const verify = async () => {
       const result = await Functions.checkAuth();
-
-      if (isMounted && result !== true) {
-        void router.push('/');
+      if (isMounted && !result) {
+        void router.replace('/');
+        return;
       } else {
-        void router.push('/home');
+        void router.push('/dashboard');
       }
     };
 

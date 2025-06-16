@@ -1,6 +1,3 @@
-import Input from './Input';
-import LoginForm from './LoginForm';
-import RegisterForm from './RegisterForm';
-import ClickToAction from './ClickToAction';
-
-export { Input, ClickToAction, LoginForm, RegisterForm };
+export { default as ClickToAction } from './ClickToAction';
+export { default as LoginForm } from './LoginForm';
+export { default as RegisterForm } from './RegisterForm';
